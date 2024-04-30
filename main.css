@@ -2,13 +2,24 @@
 body, html {
     margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #003366; /* Dark blue background */
+    color: white;
 }
 
 header {
-    background-color: #003366;
-    color: white;
+    background-color: #0055A4; /* Lighter blue header */
     padding: 10px 20px;
     text-align: center;
+}
+
+#city-selector {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
 #weather-container {
@@ -19,14 +30,26 @@ header {
 }
 
 .weather-card {
-    background-color: #f2f2f2;
+    background-color: #007BFF; /* Blue card background */
     border-radius: 8px;
+    color: white;
     padding: 20px;
     margin: 10px;
     width: 200px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Adding shadow for better visibility */
+}
+
+.weather-card img {
+    width: 100px;
+    height: auto;
 }
 
 .weather-card h2 {
-    margin: 0;
+    font-size: 18px;
 }
+
+.weather-card p {
+    margin: 5px 0;
+}
+
