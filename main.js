@@ -1,9 +1,8 @@
+// script.js
 document.addEventListener("DOMContentLoaded", function() {
     loadCities();
-
     document.getElementById('city-selector').addEventListener('change', function() {
-        const selectedIndex = this.selectedIndex;
-        const city = this.options[selectedIndex].dataset;
+        const city = this.options[this.selectedIndex].dataset;
         fetchWeather(city.lat, city.lon);
     });
 });
@@ -12,20 +11,18 @@ function loadCities() {
     fetch('city_coordinates.csv')
         .then(response => response.text())
         .then(data => {
-            const lines = data.split('\n');
             const selector = document.getElementById('city-selector');
-            lines.forEach((line, index) => {
-                if (index > 0 && line) {
-                    const [city, lat, lon] = line.split(',');
+            data.split('\n').slice(1).forEach(line => {
+                const [city, lat, lon] = line.split(',');
+                if (city && lat && lon) {
                     const option = new Option(city, city);
-                    option.dataset.lat = lat;
-                    option.dataset.lon = lon;
+                    option.dataset.lat = lat.trim();
+                    option.dataset.lon = lon.trim();
                     selector.appendChild(option);
                 }
             });
-            selector.dispatchEvent(new Event('change'));  // Automatically load weather for the first city
-        })
-        .catch(error => console.error('Error loading cities:', error));
+            selector.dispatchEvent(new Event('change'));
+        });
 }
 
 function fetchWeather(lat, lon) {
@@ -33,20 +30,22 @@ function fetchWeather(lat, lon) {
     fetch(`${baseUrl}?lon=${lon}&lat=${lat}&product=civillight&output=json`)
         .then(response => response.json())
         .then(data => {
-            const weatherContainer = document.getElementById('weather-container');
-            weatherContainer.innerHTML = ''; // Clear previous entries
+            const container = document.getElementById('weather-container');
+            container.innerHTML = '';
             data.dataseries.forEach(day => {
+                const date = new Date(day.date * 1000);
                 const weatherCard = document.createElement('div');
                 weatherCard.className = 'weather-card';
-                const weatherCondition = getWeatherImage(day.weather);
-                weatherCard.innerHTML = `<h2>${new Date(day.date * 1000).toDateString()}</h2>
-                                         <img src="${weatherCondition}" alt="${day.weather}">
+                weatherCard.innerHTML = `<h2>${date.toDateString()}</h2>
+                                         <img src="${getWeatherImage(day.weather)}" alt="${day.weather}">
                                          <p>${day.weather}</p>
                                          <p>High: ${day.temp2m.max}°C</p>
                                          <p>Low: ${day.temp2m.min}°C</p>`;
-                weatherContainer.appendChild(weatherCard);
+                container.appendChild(weatherCard);
             });
-        })
+        });
+}
+
         .catch(error => console.error('Error fetching weather data:', error));
 }
 
