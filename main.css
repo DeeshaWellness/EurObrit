@@ -1,0 +1,32 @@
+/* styles.css */
+body, html {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+#weather-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.weather-card {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+}
+
+.weather-card h2 {
+    margin: 0;
+}
